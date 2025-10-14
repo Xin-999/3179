@@ -1,0 +1,84 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Malaysia — Factors of Tree cover loss (2001-2024)",
+  "width": "container",
+  "height": 600,
+  "autosize": { "type": "fit", "contains": "padding", "resize": true },
+  "padding": { "top": 5, "right": 18, "bottom": 80, "left": 8 }, 
+"config": {
+    "area": { "line": false },   
+    "view": { "stroke": null }
+  },
+  "data": {
+    "url": "https://raw.githubusercontent.com/Xin-999/3179/refs/heads/main/Forest/data/tree_cover_loss_drivers_malaysia.csv"
+  },
+
+  "layer": [
+    {
+      "transform": [
+        { "calculate": "toNumber(datum.Year)", "as": "year_num" },
+        { "filter": "isValid(datum.loss_ha) && isValid(datum.year_num)" },
+        { "joinaggregate": [{"op": "sum", "field": "loss_ha", "as": "year_total"}], "groupby": ["year_num"] },
+        { "calculate": "datum.loss_ha / datum.year_total", "as": "share" }
+      ],
+      "params": [
+        {
+          "name": "DriverPickStream",
+          "select": { "type": "point", "fields": ["driver"] },
+          "bind": "legend"
+        }
+      ],
+      "mark": { "type": "area", "interpolate": "monotone" },
+      "encoding": {
+        "x": {
+          "field": "year_num",
+          "type": "quantitative",
+          "axis": { "format": "d", "title": "Year" },
+          "scale": { "nice": false }
+        },
+        "y": {
+          "field": "loss_ha",
+          "type": "quantitative",
+          "stack": "center",
+          "axis": { "title": "Tree cover loss (ha)" }
+        },
+        "color": {
+          "field": "driver",
+          "type": "nominal",
+          "legend": {
+        "orient": "bottom",
+        "columns": 4,           
+        "title": null,
+        "labelFontSize": 11,
+        "labelLimit": 160,   
+        "symbolSize": 80,
+        "offset": 0
+      },
+          "sort": { "op": "sum", "field": "loss_ha", "order": "descending" }
+        },
+        "opacity": { "condition": { "param": "DriverPickStream", "value": 1 }, "value": 0.4 },
+        "tooltip": [
+          { "field": "driver", "title": "Factor" },
+          { "field": "year_num", "type": "quantitative", "format": "d", "title": "Year" },
+          { "field": "loss_ha", "type": "quantitative", "format": ",.0f", "title": "Loss (ha)" },
+          { "field": "share", "type": "quantitative", "format": ".1%", "title": "Share of year" }
+        ]
+      }
+    },
+
+    {
+      "data": { "values": [{}] },
+      "mark": {
+        "type": "rule",
+        "strokeDash": [8,4],
+        "color": "#444",
+        "size": 2,
+        "opacity": 0.9
+      },
+      "encoding": {
+        "x": { "datum": 2016 }
+      }
+    }
+  ]
+
+}
