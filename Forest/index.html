@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Forests of ASEAN — change, drivers, and impacts</title>
+
+  <!-- Vega stack -->
+  <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
+
+  <!-- pure.css grid -->
+  <link rel="stylesheet"
+        href="https://unpkg.com/purecss@2.0.3/build/pure-min.css"
+        integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ"
+        crossorigin="anonymous">
+
+  <!-- Optional font + your site styles -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* body{font-family:"Open Sans",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    .vis-container{background:#fff;border:1px solid #e6e6e6;border-radius:10px;padding:8px} */
+    .card{background:#e5f5e0;border:1px solid #ddd;border-radius:10px;padding:12px}
+    /* h1{margin:0 0 8px} */
+    .small{color:#666;font-size:.9rem}
+  </style>
+
+</head>
+
+<body>
+  <div class="page">
+
+    <!-- Header -->
+    <div class="pure-u-1 pure-u-lg-1-3">
+        <div class="card center-card">
+            <h1>Forests in Malaysia — change, drivers, and impacts</h1>
+        </div>
+    </div>
+
+    <div class="pure-g donut-row">
+      <div class="pure-u-1-2">
+        <div class="description description-left">
+            <div id="vis-donut-cover" class="vis-container"></div>
+        </div>
+      </div>
+      <div class="pure-u-1-2">
+        <div id="vis-donut" class="vis-container"></div>
+      </div>
+</div>
+
+<!-- Donut captions row (updated, simpler wording) -->
+<div class="pure-g">
+  <!-- Left caption (pairs with #vis-donut-cover) -->
+  <div class="pure-u-1-2">
+    <div class="description description-left">
+      <h3>How Malaysia’s land is split</h3>
+      <p>This donut shows a quick breakdown of Malaysia’s total land today.</p>
+      <ul class="small">
+        <li><strong>Natural forest</strong> – native forests and other natural lands.</li>
+        <li><strong>Non-natural tree cover</strong> – planted trees (e.g., oil palm, rubber, timber).</li>
+        <li><strong>Other land</strong> – farms, towns, water and everything else.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Right caption (pairs with #vis-donut) -->
+  <div class="pure-u-1-2">
+    <div class="description description-right">
+      <h3>What kind of forest is it?</h3>
+      <p>This donut looks <em>inside the forest area</em> and shows its mix.</p>
+      <ul class="small">
+        <li><strong>Primary forest</strong> – old-growth, largely undisturbed.</li>
+        <li><strong>Regenerated forest</strong> – regrown after past clearing or logging.</li>
+        <li><strong>Planted forest</strong> – forest plantations and managed stands.</li>
+        <li><strong>Non-forest</strong> – appears only when totals include all land.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Forest cover -->
+<div class="text-div" id="text_div1">
+  <h3 style="text-align:center;;">Forest coverage</h3>
+  <p class="small">
+    Drag the year sliders to zoom a period; Hover lines for exact values
+  </p>
+</div>
+
+<div class="pure-g" >
+  <!-- Map -->
+  <div class="pure-u-2-3 central">
+    <div id="vis-map" class="vis-container" style="width:95%;box-sizing:border-box;"></div>
+  </div>
+
+  <!-- Side text -->
+    <div class="pure-u-1-3 central" style="border-left: 1px solid; box-sizing: border-box;">
+    <div class="text-div" id="text_div1">
+      <h3 style="text-align:center;margin-top:6px">About this map</h3>
+      <p class="small">
+        Choropleth shows <em>forest area as % of land</em> for ASEAN countries.
+        Use the year slider to change the map year. Countries in grey have no data.
+      </p>
+      <ul class="small" style="margin:6px 0 0 18px">
+        <li>Projection: Equal Earth</li>
+        <li>Legend: threshold bins (%, bottom)</li>
+      </ul>
+      <h4 class="small" style="margin:10px 0 6px;">How the % is calculated</h4>
+<ul class="small" style="margin:6px 0 0 18px; line-height:1.6;">
+        <li><strong>% of land</strong> = <em>Forest area (ha)</em> ÷ <em>Total country land area (ha)</em>.</li>
+        <li>This normalisation lets you compare countries of very different sizes fairly.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Small multiples with bottom-right commentary -->
+<div class="pure-g">
+  
+</div>
+ <div class="pure-g" style="margin-top:22px">
+      <div class="pure-u-1">
+  <div id="vis-choro-multiple-sm" class="vis-container"></div>
+      </div>
+    </div>
+
+
+<div class="text-div" id="text_div1">
+  <h3 style="text-align:center;margin-top:6px">Primary forest loss per 100k ha of country area by year</h3>
+
+  <p class="small">
+    Drag the year sliders to zoom a period; Hover lines for exact values; Click legend to emphasis selected countries.
+  </p>
+
+
+    <!-- Time series -->
+    <div class="pure-g" style="margin-top:22px">
+      <div class="pure-u-1">
+        <div id="vis-timeseries" class="vis-container"></div>
+        <div id="year-controls" class="param-controls" style="margin-top:10px"></div>
+      </div>
+    </div>
+
+    <div id="year-controls" class="param-controls"></div>
+<!-- Extra info & how-to panel for the line chart -->
+
+<!-- Quick guide  -->
+<div class="pure-g">
+  <div class="pure-u-1">
+    <div class="vis-helper">
+      <h3>Insights</h3>
+      <ul class="small compact-list "style="max-width: 450px;">
+        <li><strong>High-loss countries</strong>: Cambodia and Malaysia record the steepest losses early in the 2000s, linked to large-scale logging and plantation expansion.</li>
+      <li><strong>Stabilising patterns</strong>: Some countries, like Thailand and Brunei, show steady or improving forest cover due to reforestation and conservation programs.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<!-- Factors of Tree Cover Loss section -->
+<div class="pure-g">
+  <!-- Chart on the left -->
+  <div class="pure-u-2-3 central">
+    <div id="vis-stream-factor" class="vis-container" style="box-sizing:border-box;"></div>
+  </div>
+
+  <!-- Text info on the right -->
+  <div class="pure-u-1-3 central" style="border-left:1px solid #ccc; box-sizing:border-box;">
+    <div class="text_div" id="text_div1">
+      <h3 style="text-align:center; margin-top:6px;">About this chart</h3>
+
+      <p class="small">
+        This stacked area chart shows Malaysia’s annual <strong>tree-cover loss</strong> (2001–2024), 
+        grouped by its main drivers. Values are shown in hectares.
+      </p>
+
+      <ul class="small" style="margin:6px 0 10px 18px; line-height:1.4;">
+        <li><strong>Dominant factor</strong>: 
+          <span style="color:#4e79a7;font-weight:bold;">Agriculture (commodity)</span> 
+          is the largest cause, tied to oil palm and rubber expansion.
+        </li>
+        <li><strong>Other causes</strong>: 
+          <span style="color:#f28e2b;font-weight:bold;">Logging</span> ranks second, 
+          followed by smaller shares from mining, settlements, and shifting cultivation.
+        </li>
+        <li><strong>Trend</strong>: Losses peaked during 2008–2016, 
+          then declined after 2017 as <em>sustainable-logging policies</em> took effect.
+        </li>
+        <li><strong>Tip</strong>: Hover over coloured layers for yearly values. 
+          Thicker bands show years where that driver dominated total loss.
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Put inside the left column div (1/3 width) -->
+<div class="text-div" id="forest_info" style="padding:6px 10px">
+  <h3 style="text-align:center;margin:4px 0 6px">About this map</h3>
+  <p class="small">
+    Each <strong>green spike</strong> shows tree-cover gain by state. 
+    The <strong>taller</strong> the spike, the greater the gain in hectares.
+    Spike width stays constant to highlight height differences.
+  </p>
+
+  <ul class="small" style="margin:4px 0 0 14px">
+    <li>Hover spikes to view state name and gain (ha).</li>
+    <li><strong>Sabah</strong> records the highest gain, followed by <strong>Sarawak</strong>.</li>
+    <li>Urban states show smaller spikes due to limited forest area.</li>
+  </ul>
+
+  <p class="small" style="margin-top:6px">
+    Legend on the right indicates how <em>spike height</em> corresponds to gain (ha).
+  </p>
+</div>
+
+<!-- <div class="pure-g" style="margin-top:22px">
+    <div class="pure-u-1">
+      <div id="vis-symbol-gain" class="vis-container"></div>
+    </div>
+  </div> -->
+
+  
+
+<div class="pure-g" >
+  <!-- Map -->
+  </div>
+    <div class="pure-u-1">
+    <div id="vis-symbol-gain" class="vis-container" style="width:95%;box-sizing:border-box;"></div>
+  </div>
+</div>
+
+  </div>
+
+  
+  
+  
+  <script type="text/javascript">
+
+  var spec0 = "js/donut_forest.json";
+  vegaEmbed('#vis-donut', spec0).then(function(result) {
+  }).catch(console.error);
+
+  var spec1 = "js/choropleth_map.vg.json";
+  vegaEmbed('#vis-map', spec1).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);
+
+  var spec2 = "js/multiseries_forest_loss.json";
+  vegaEmbed('#vis-timeseries', spec2).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);
+  
+  var spec3 = "js/donut_forest_cover.json";
+  vegaEmbed('#vis-donut-cover', spec3).then(function(result) {
+  }).catch(console.error);
+
+  var spec4 = "js/streamgraph_factor.json";
+  vegaEmbed('#vis-stream-factor', spec4).then(function(result) {
+  }).catch(console.error);
+  
+  var spec5 = "js/symbol_gain.json";
+  vegaEmbed('#vis-symbol-gain', spec5).then(function(result) {
+  }).catch(console.error);
+
+  // var spec6 = "js/choropleth_small_multiples.json";
+  // vegaEmbed('#vis-choro-multiple', spec6).then(function(result) {
+  // }).catch(console.error);
+  var spec6 = "js/choropleth_small_multiples.json";
+  vegaEmbed('#vis-choro-multiple-sm', spec6).then(function(result) {
+  }).catch(console.error);
+  // vegaEmbed(
+  //   "#vis-choro-multiple-sm",
+  //   "js/choropleth_small_multiples.json",
+  //   { actions:false }
+  // );
+
+
+</script>
+</body>
+</html>
