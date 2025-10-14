@@ -1,0 +1,71 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Malaysia forest composition donut (FAO treecover breakdown) with center labels.",
+
+  "title": {
+    "text": "Forest Composition by Type",
+    "fontSize": 16,
+    "fontWeight": "bold",
+    "anchor": "start",
+    "color": "#333",
+    "dy": -10
+  },
+
+  "data": { 
+    "url": "https://raw.githubusercontent.com/Xin-999/3179/refs/heads/main/Forest/data/malaysia_forest_composition_donut.csv"
+  },
+
+  "transform": [
+    { "filter": "datum.country == 'Malaysia'" },
+    {
+      "joinaggregate": [
+        { "op": "sum", "field": "hectares", "as": "total_ha" }
+      ],
+      "groupby": ["country"]
+    },
+    { "calculate": "datum.hectares / datum.total_ha * 100", "as": "pct" },
+    { "calculate": "'Total\\n' + format(datum.total_ha, ',') + ' ha'", "as": "center_label" }
+  ],
+
+  "view": { "stroke": null },
+  "width": 260,
+  "height": 200,
+
+  "layer": [
+    {
+      "mark": { "type": "arc", "innerRadius": 50 },
+      "encoding": {
+        "theta": { "field": "hectares", "type": "quantitative" },
+        "color": {
+          "field": "category_label",
+          "type": "nominal",
+          "title": "Category"
+        },
+        "order": { "field": "hectares", "type": "quantitative", "sort": "descending" },
+        "tooltip": [
+        { "field": "country", "type": "nominal", "title": "Country" },
+        { "field": "category_label", "type": "nominal", "title": "Category" },
+        { "field": "hectares", "type": "quantitative", "format": ",", "title": "Hectares (ha)" },
+          { "field": "pct", "type": "quantitative", "format": ".1f", "title": "Share (%)" },
+          { "aggregate": "sum", "field": "hectares", "type": "quantitative", "format": ",", "title": "Total treecover (ha)" }
+        ]
+      }
+    },
+
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 14,
+        "fontWeight": "normal",
+        "align": "center",
+        "baseline": "middle",
+        "lineBreak": "\n"
+      },
+      "encoding": {
+        "text": { "field": "center_label" },
+        "x": { "value": 130 },
+        "y": { "value": 90 }
+      }
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "How Malaysia’s land splits today (SBTN forest classes).",
+  "title": {"text": "Land Split in Malaysia", "fontSize": 16, "anchor": "start"
+, "dy": -10},
+
+  "data": {
+    "url": "https://raw.githubusercontent.com/Xin-999/3179/main/Forest/data/forest_cover_type.csv",
+    "format": {"type": "csv"}
+  },
+
+  "transform": [
+    { "calculate": "trim(datum.iso)", "as": "iso_trim" },
+    { "calculate": "toNumber(datum.area__ha)", "as": "area_ha_num" },
+    { "filter": "datum.iso_trim == 'MYS'" },
+    { "filter": "isValid(datum.area_ha_num) && isFinite(datum.area_ha_num) && datum.area_ha_num > 0" },
+    { "joinaggregate": [{ "op": "sum", "field": "area_ha_num", "as": "total_ha" }], "groupby": ["iso_trim"] },
+    { "calculate": "'Total\\n' + format(datum.total_ha, ',.0f') + ' ha'", "as": "center_label" },
+    { "calculate": "datum.area_ha_num / datum.total_ha * 100", "as": "pct" },
+      {
+    "calculate": "datum.class_label == 'Unknown' ? 'Other Land cover' : datum.class_label",
+    "as": "class_label"
+  }
+
+  ],
+
+  "view": { "stroke": null },
+  "width": 260,
+  "height": 200,
+
+
+  "layer": [
+    {
+      "mark": { "type": "arc", "innerRadius": 50 },
+      "encoding": {
+        "theta": { "field": "area_ha_num", "type": "quantitative" },
+        "color": { "field": "class_label", "type": "nominal", "title": "Class", "sort": "-theta" ,"scale": {
+        "domain": ["Natural Forest", "Non-Natural Forest", "Other Land cover"],
+        "range": ["#F2D785", "#D9806C", "#94A3B8"]  
+  }},
+        "order": { "field": "area_ha_num", "type": "quantitative", "sort": "descending" },
+        "tooltip": [
+          { "field": "class_label", "type": "nominal", "title": "Class" },
+          { "field": "area_ha_num", "type": "quantitative", "format": ",", "title": "Area (ha)" },
+        { "field": "pct", "type": "quantitative", "format": ".1f", "title": "Share (%)" }
+
+        ]   
+      }
+    },
+    {
+      "mark": { "type": "text", "fontSize": 14, "fontWeight": "normal", "align": "center", "baseline": "middle", "lineBreak": "\n" },
+      "encoding": { "text": { "field": "center_label" }, "x": { "value": 130 },
+        "y": { "value": 90 } }
+    }
+  ]
+}
