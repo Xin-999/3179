@@ -1,84 +1,75 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Malaysia — Factors of Tree cover loss (2001-2024)",
-  "width": "container",
-  "height": 600,
-  "autosize": { "type": "fit", "contains": "padding", "resize": true },
-  "padding": { "top": 5, "right": 18, "bottom": 80, "left": 8 }, 
-"config": {
-    "area": { "line": false },   
-    "view": { "stroke": null }
-  },
+  "title": "Malaysia — Factors of Tree cover loss (2001–2024)",
   "data": {
     "url": "https://raw.githubusercontent.com/Xin-999/3179/refs/heads/main/Forest/data/tree_cover_loss_drivers_malaysia.csv"
   },
-
-  "layer": [
+  "vconcat": [
     {
+      "width": 450,
+      "height": 420,
       "transform": [
-        { "calculate": "toNumber(datum.Year)", "as": "year_num" },
-        { "filter": "isValid(datum.loss_ha) && isValid(datum.year_num)" },
-        { "joinaggregate": [{"op": "sum", "field": "loss_ha", "as": "year_total"}], "groupby": ["year_num"] },
-        { "calculate": "datum.loss_ha / datum.year_total", "as": "share" }
+        {"calculate": "toNumber(datum.Year)", "as": "year_num"},
+        {"filter": "isValid(datum.loss_ha) && isValid(datum.year_num) && datum.year_num >= 2001"},
+        {"joinaggregate": [{"op": "sum", "field": "loss_ha", "as": "year_total"}], "groupby": ["year_num"]},
+        {"calculate": "datum.loss_ha / datum.year_total", "as": "share_raw"}
       ],
-      "params": [
-        {
-          "name": "DriverPickStream",
-          "select": { "type": "point", "fields": ["driver"] },
-          "bind": "legend"
-        }
-      ],
-      "mark": { "type": "area", "interpolate": "monotone" },
+      "mark": {"type": "area", "interpolate": "monotone", "clip": true},
       "encoding": {
         "x": {
           "field": "year_num",
           "type": "quantitative",
-          "axis": { "format": "d", "title": "Year" },
-          "scale": { "nice": false }
+          "scale": {"domain": {"param": "brush"}, "domainMin": 2001, "domainMax": 2024, "nice": false, "zero": false},
+          "axis": {"format": "d", "labelAngle": 0, "tickMinStep": 1, "title": null}
         },
         "y": {
+          "aggregate": "sum",
           "field": "loss_ha",
           "type": "quantitative",
           "stack": "center",
-          "axis": { "title": "Tree cover loss (ha)" }
+          "axis": {"title": "Tree cover loss (ha)"}
         },
         "color": {
           "field": "driver",
           "type": "nominal",
-          "legend": {
-        "orient": "bottom",
-        "columns": 4,           
-        "title": null,
-        "labelFontSize": 11,
-        "labelLimit": 160,   
-        "symbolSize": 80,
-        "offset": 0
-      },
-          "sort": { "op": "sum", "field": "loss_ha", "order": "descending" }
+          "legend": {"orient": "bottom", "columns": 4, "title": null}
         },
-        "opacity": { "condition": { "param": "DriverPickStream", "value": 1 }, "value": 0.4 },
         "tooltip": [
-          { "field": "driver", "title": "Factor" },
-          { "field": "year_num", "type": "quantitative", "format": "d", "title": "Year" },
-          { "field": "loss_ha", "type": "quantitative", "format": ",.0f", "title": "Loss (ha)" },
-          { "field": "share", "type": "quantitative", "format": ".1%", "title": "Share of year" }
+          {"field": "driver", "title": "Factor"},
+          {"field": "year_num", "type": "quantitative", "format": "d", "title": "Year"},
+          {"aggregate": "sum", "field": "loss_ha", "type": "quantitative", "format": ",.0f", "title": "Loss (ha)"},
+          {"aggregate": "sum", "field": "share_raw", "type": "quantitative", "format": ".0%", "title": "Share of year"}
         ]
       }
     },
-
     {
-      "data": { "values": [{}] },
-      "mark": {
-        "type": "rule",
-        "strokeDash": [8,4],
-        "color": "#444",
-        "size": 2,
-        "opacity": 0.9
-      },
+      "width": 450,
+      "height": 70,
+      "transform": [
+        {"calculate": "toNumber(datum.Year)", "as": "year_num"},
+        {"filter": "isValid(datum.loss_ha) && isValid(datum.year_num) && datum.year_num >= 2001"}
+      ],
+      "params": [
+        {"name": "brush", "select": {"type": "interval", "encodings": ["x"]}}
+      ],
+      "mark": {"type": "area", "interpolate": "monotone", "opacity": 0.5, "clip": true},
       "encoding": {
-        "x": { "datum": 2016 }
+        "x": {
+          "field": "year_num",
+          "type": "quantitative",
+          "scale": {"domain": [2001, 2024], "nice": false, "zero": false},
+          "axis": {"format": "d", "labelAngle": 0, "tickMinStep": 1, "title": null}
+        },
+        "y": {
+          "aggregate": "sum",
+          "field": "loss_ha",
+          "type": "quantitative",
+          "stack": "center",
+          "axis": null
+        },
+        "color": {"field": "driver", "type": "nominal", "legend": null}
       }
     }
-  ]
-
+  ],
+  "resolve": {"scale": {"x": "independent"}}
 }

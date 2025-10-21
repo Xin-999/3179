@@ -8,7 +8,8 @@
     "fontWeight": "bold",
     "anchor": "start",
     "color": "#333",
-    "dy": -10
+    "dy": -10,
+    "font": "Geograph"
   },
 
   "data": { 
@@ -29,7 +30,7 @@
 
   "view": { "stroke": null },
   "width": 260,
-  "height": 200,
+  "height": 220,
 
   "layer": [
     {
@@ -64,7 +65,7 @@
       "encoding": {
         "text": { "field": "center_label" },
         "x": { "value": 130 },
-        "y": { "value": 90 }
+        "y": { "value": 100 }
       }
     }
   ]

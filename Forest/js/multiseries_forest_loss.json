@@ -1,6 +1,5 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Primary forest loss (per 100k ha of country area) — ASEAN",
   "autosize": {"type": "fit", "contains": "padding"},
   "width": "container",
   "height": 350,
@@ -52,8 +51,8 @@
               "Myanmar","Philippines","Singapore","Thailand","Vietnam"
             ],
             "range": [
-              "#ef6eb0","#BFA27E","#7570b3","#bab0ac","#66a61e",
-              "#e6ab02","#a6761d","#1f78b4","#b2df8a","#fb9a99"
+              "#D3D3D3","#7570b3","#D3D3D3","#D3D3D3","#66a61e",
+              "#D3D3D3","#a6761d","#D3D3D3","#D3D3D3","#D3D3D3"
             ]
           }
         },
