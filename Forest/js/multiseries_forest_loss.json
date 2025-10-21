@@ -1,25 +1,63 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "autosize": {"type": "fit", "contains": "padding"},
+  "autosize": { "type": "fit", "contains": "padding" },
   "width": "container",
   "height": 350,
-  "data": { "url": "https://raw.githubusercontent.com/Xin-999/visualisation-vegalite/refs/heads/main/Part_2/data/primary_forest_loss_formatted_asean.csv" },
+  "data": {
+    "url": "https://raw.githubusercontent.com/Xin-999/visualisation-vegalite/refs/heads/main/Part_2/data/primary_forest_loss_formatted_asean.csv"
+  },
   "params": [
-    { "name": "YearStart", "value": 2002, "bind": { "input": "range", "min": 2002, "max": 2023, "step": 1, "name": "From year: ", "element": "#year-controls" } },
-    { "name": "YearEnd",   "value": 2023, "bind": { "input": "range", "min": 2002, "max": 2023, "step": 1, "name": " to year: ", "element": "#year-controls" } }
+    {
+      "name": "YearStart",
+      "value": 2002,
+      "bind": {
+        "input": "range",
+        "min": 2002,
+        "max": 2023,
+        "step": 1,
+        "name": "From year: ",
+        "element": "#year-controls"
+      }
+    },
+    {
+      "name": "YearEnd",
+      "value": 2023,
+      "bind": {
+        "input": "range",
+        "min": 2002,
+        "max": 2023,
+        "step": 1,
+        "name": " to year: ",
+        "element": "#year-controls"
+      }
+    }
   ],
   "transform": [
     { "calculate": "toNumber(datum.year)", "as": "year_num" },
-    { "calculate": "toNumber(datum.loss_per_100k_ha_normalised)", "as": "loss_per_100k" },
+    {
+      "calculate": "toNumber(datum.loss_per_100k_ha_normalised)",
+      "as": "loss_per_100k"
+    },
     { "filter": "isValid(datum.loss_per_100k) && isValid(datum.year_num)" },
-    { "filter": "datum.year_num >= min(YearStart, YearEnd) && datum.year_num <= max(YearStart, YearEnd)" }
+    {
+      "filter": "datum.year_num >= min(YearStart, YearEnd) && datum.year_num <= max(YearStart, YearEnd)"
+    }
   ],
   "layer": [
     {
       "params": [
-        { "name": "CountryPick", "select": { "type": "point", "fields": ["country"] }, "bind": "legend" }
+        {
+          "name": "CountryPick",
+          "select": { "type": "point", "fields": ["country"] },
+          "bind": "legend"
+        }
       ],
-      "mark": { "type": "line", "point": { "filled": true, "size": 36 }, "strokeWidth": 3, "tooltip": true },
+      "mark": {
+        "type": "line",
+        "point": { "filled": true, "size": 36 },
+        "strokeWidth": 3,
+        "tooltip": true
+      },
       "encoding": {
         "x": {
           "field": "year_num",
@@ -31,15 +69,20 @@
           },
           "axis": {
             "format": "d",
-            "values": { "expr": "sequence(min(YearStart, YearEnd), max(YearStart, YearEnd) + 1, 1)" }
+            "values": {
+              "expr": "sequence(min(YearStart, YearEnd), max(YearStart, YearEnd) + 1, 1)"
+            }
           },
           "title": "Year"
         },
         "y": {
           "field": "loss_per_100k",
           "type": "quantitative",
-          "title": "Loss per 100k ha of country area",
-          "axis": { "format": ".1f" }
+          "title": "Loss per 100k (ha) of country area",
+          "axis": {
+            "format": ",.0f",
+            "titleFont": "Geograph"
+          }
         },
         "color": {
           "field": "country",
@@ -47,39 +90,85 @@
           "legend": { "orient": "bottom" },
           "scale": {
             "domain": [
-              "Brunei","Cambodia","Indonesia","Laos","Malaysia",
-              "Myanmar","Philippines","Singapore","Thailand","Vietnam"
+              "Brunei",
+              "Cambodia",
+              "Indonesia",
+              "Laos",
+              "Malaysia",
+              "Myanmar",
+              "Philippines",
+              "Singapore",
+              "Thailand",
+              "Vietnam"
             ],
             "range": [
-              "#D3D3D3","#7570b3","#D3D3D3","#D3D3D3","#66a61e",
-              "#D3D3D3","#a6761d","#D3D3D3","#D3D3D3","#D3D3D3"
+              "#D3D3D3",
+              "#7570b3",
+              "#D3D3D3",
+              "#D3D3D3",
+              "#66a61e",
+              "#D3D3D3",
+              "#a6761d",
+              "#D3D3D3",
+              "#D3D3D3",
+              "#D3D3D3"
             ]
           }
         },
-        "opacity": { "condition": { "param": "CountryPick", "value": 1 }, "value": 0.25 },
+        "opacity": {
+          "condition": { "param": "CountryPick", "value": 1 },
+          "value": 0.25
+        },
         "tooltip": [
           { "field": "country", "title": "Country" },
-          { "field": "year_num", "type": "quantitative", "format": "d", "title": "Year" },
-          { "field": "loss_per_100k", "type": "quantitative", "format": ".2f", "title": "Loss per 100k ha" }
+          {
+            "field": "year_num",
+            "type": "quantitative",
+            "format": "d",
+            "title": "Year"
+          },
+          {
+            "field": "loss_per_100k",
+            "type": "quantitative",
+            "format": ".2f",
+            "title": "Loss per 100k ha"
+          }
         ]
       }
     },
     {
-      "mark": { "type": "rule", "stroke": "#6b7280", "strokeDash": [8,4], "strokeWidth": 1.5 },
+      "mark": {
+        "type": "rule",
+        "stroke": "#6b7280",
+        "strokeDash": [8, 4],
+        "strokeWidth": 1.5
+      },
       "encoding": { "x": { "datum": 2016, "type": "quantitative" } }
     },
     {
-    "transform": [
-      { "aggregate": [{ "op": "max", "field": "loss_per_100k", "as": "ymax" }] }
-    ],
-    "mark": { "type": "text", "align": "left", "dx": 6, "dy": -6, "fontSize": 11, "fontWeight": "normal", "fill": "#374151"
-  , "lineBreak": "\n" },
-    "encoding": {
-      "x": { "datum": 2016, "type": "quantitative" },
-      "y": { "field": "ymax", "type": "quantitative" },
-      "text": { "value": "Forest Law Enforcement and Governance (FLEG)\n enforced. Losses start to drop across ASEAN" }
+      "transform": [
+        {
+          "aggregate": [{ "op": "max", "field": "loss_per_100k", "as": "ymax" }]
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 6,
+        "dy": -6,
+        "fontSize": 11,
+        "fontWeight": "normal",
+        "fill": "#374151",
+        "lineBreak": "\n"
+      },
+      "encoding": {
+        "x": { "datum": 2016, "type": "quantitative" },
+        "y": { "field": "ymax", "type": "quantitative" },
+        "text": {
+          "value": "Forest Law Enforcement and Governance (FLEG)\n enforced. Losses start to drop across ASEAN"
+        }
+      }
     }
-  }
   ],
   "config": {
     "view": { "stroke": null },
@@ -89,8 +178,8 @@
       "gridColor": "#e5e7eb",
       "gridOpacity": 0.3,
       "gridWidth": 1,
-      "domain": false,
-      "ticks": false
+      "domain": true,
+      "ticks": true
     }
   }
 }

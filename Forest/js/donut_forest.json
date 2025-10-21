@@ -12,20 +12,21 @@
     "font": "Geograph"
   },
 
-  "data": { 
+  "data": {
     "url": "https://raw.githubusercontent.com/Xin-999/3179/refs/heads/main/Forest/data/malaysia_forest_composition_donut.csv"
   },
 
   "transform": [
     { "filter": "datum.country == 'Malaysia'" },
     {
-      "joinaggregate": [
-        { "op": "sum", "field": "hectares", "as": "total_ha" }
-      ],
+      "joinaggregate": [{ "op": "sum", "field": "hectares", "as": "total_ha" }],
       "groupby": ["country"]
     },
     { "calculate": "datum.hectares / datum.total_ha * 100", "as": "pct" },
-    { "calculate": "'Total\\n' + format(datum.total_ha, ',') + ' ha'", "as": "center_label" }
+    {
+      "calculate": "'Total\\n' + format(datum.total_ha, ',') + ' ha'",
+      "as": "center_label"
+    }
   ],
 
   "view": { "stroke": null },
@@ -40,15 +41,44 @@
         "color": {
           "field": "category_label",
           "type": "nominal",
-          "title": "Category"
+          "title": "Category",
+          "scale": {
+            "domain": [
+              "Non-forest",
+              "Planted forest",
+              "Primary forest",
+              "Regenerated forest"
+            ],
+            "range": ["#4b6cb7", "#f97316", "#F68E9D", "#ABDF75"]
+          }
         },
-        "order": { "field": "hectares", "type": "quantitative", "sort": "descending" },
+        "order": {
+          "field": "hectares",
+          "type": "quantitative",
+          "sort": "descending"
+        },
         "tooltip": [
-        { "field": "country", "type": "nominal", "title": "Country" },
-        { "field": "category_label", "type": "nominal", "title": "Category" },
-        { "field": "hectares", "type": "quantitative", "format": ",", "title": "Hectares (ha)" },
-          { "field": "pct", "type": "quantitative", "format": ".1f", "title": "Share (%)" },
-          { "aggregate": "sum", "field": "hectares", "type": "quantitative", "format": ",", "title": "Total treecover (ha)" }
+          { "field": "country", "type": "nominal", "title": "Country" },
+          { "field": "category_label", "type": "nominal", "title": "Category" },
+          {
+            "field": "hectares",
+            "type": "quantitative",
+            "format": ",",
+            "title": "Hectares (ha)"
+          },
+          {
+            "field": "pct",
+            "type": "quantitative",
+            "format": ".1f",
+            "title": "Share (%)"
+          },
+          {
+            "aggregate": "sum",
+            "field": "hectares",
+            "type": "quantitative",
+            "format": ",",
+            "title": "Total treecover (ha)"
+          }
         ]
       }
     },
