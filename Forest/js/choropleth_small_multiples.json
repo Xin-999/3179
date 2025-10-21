@@ -1,220 +1,118 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Forest area (% of land) — ASEAN (1992, 2000, 2010, 2018)",
-  "vconcat": [
-    {
-      "hconcat": [
-        {
-          "title": "1992",
-          "projection": { "type": "equalEarth" },
-          "width": 360,
-          "height": 265,
-          "layer": [
-            {
-              "data": {
-                "url": "https://raw.githubusercontent.com/Xin-999/visualisation-vegalite/refs/heads/main/Part_2/js/ne_10m_asean.topojson",
-                "format": { "type": "topojson", "feature": "ne_10m_admin_0_countries" }
-              },
-              "mark": { "type": "geoshape", "fill": "#efefef", "stroke": "white", "strokeWidth": 0.5 }
-            },
-            {
-              "data": { "url": "https://raw.githubusercontent.com/Xin-999/visualisation-vegalite/refs/heads/main/Part_1/data/forest_area_asean_long.csv" },
-              "transform": [
-                { "filter": "datum.Year == 1992" },
-                {
-                  "filter": "indexof(['BRN','KHM','IDN','LAO','MMR','MYS','PHL','SGP','THA','VNM'], datum['Country Code']) >= 0"
-                },
-                { "calculate": "datum['ForestArea'] / datum['Land Area(Sqkm)'] * 100", "as": "ForestArea_percent" },
-                {
-                  "lookup": "Country Code",
-                  "from": {
-                    "data": {
-                      "url": "https://raw.githubusercontent.com/Xin-999/visualisation-vegalite/refs/heads/main/Part_2/js/ne_10m_asean.topojson",
-                      "format": { "type": "topojson", "feature": "ne_10m_admin_0_countries" }
-                    },
-                    "key": "properties.ISO_A3",
-                    "fields": ["geometry", "properties"]
-                  }
-                }
-              ],
-              "mark": { "type": "geoshape" },
-              "encoding": {
-                "shape": { "field": "geometry", "type": "geojson" },
-                "color": {
-                  "field": "ForestArea_percent",
-                  "type": "quantitative",
-                  "scale": {
-                    "type": "threshold",
-                    "domain": [30, 50, 60],
-                    "range": ["#edf8e9", "#bae4b3", "#74c476", "#238b45"]
-                  },
-                  "legend": null
-                }
-              }
-            }
-          ]
+  "title": "Forest Area (% of Land) in ASEAN (1992, 2000, 2010, 2018)",
+  "repeat": ["1992", "2000", "2010", "2018"],
+  "columns": 2,
+  "spec": {
+    "width": 250,
+    "height": 260,
+    "projection": {"type": "equalEarth"},
+    "layer": [
+      {
+        "data": {
+          "url": "https://raw.githubusercontent.com/Xin-999/visualisation-vegalite/refs/heads/main/Part_2/js/ne_10m_asean.topojson",
+          "format": {"type": "topojson", "feature": "ne_10m_admin_0_countries"}
         },
-
-        {
-          "title": "2000",
-          "projection": { "type": "equalEarth" },
-          "width": 360,
-          "height": 265,
-          "layer": [
-            {
+        "mark": {"type": "geoshape", "fill": "#f3f4f6", "stroke": "white", "strokeWidth": 0.6}
+      },
+      {
+        "data": {
+          "url": "https://raw.githubusercontent.com/Xin-999/visualisation-vegalite/refs/heads/main/Part_2/js/ne_10m_graticules_10.topojson",
+          "format": {"type": "topojson", "feature": "ne_10m_graticules_10"}
+        },
+        "mark": {"type": "geoshape", "fill": null, "stroke": "#d1d5db", "strokeWidth": 0.4}
+      },
+      {
+        "data": {
+          "url": "https://raw.githubusercontent.com/Xin-999/3179/refs/heads/main/Forest/data/forest_area_pct_wide.csv"
+        },
+        "transform": [
+          {
+            "filter": "indexof(['BRN','KHM','IDN','LAO','MMR','MYS','PHL','SGP','THA','VNM'], datum['Country Code']) >= 0"
+          },
+          {
+            "lookup": "Country Code",
+            "from": {
               "data": {
                 "url": "https://raw.githubusercontent.com/Xin-999/visualisation-vegalite/refs/heads/main/Part_2/js/ne_10m_asean.topojson",
-                "format": { "type": "topojson", "feature": "ne_10m_admin_0_countries" }
+                "format": {"type": "topojson", "feature": "ne_10m_admin_0_countries"}
               },
-              "mark": { "type": "geoshape", "fill": "#efefef", "stroke": "white", "strokeWidth": 0.5 }
-            },
-            {
-              "data": { "url": "https://raw.githubusercontent.com/Xin-999/visualisation-vegalite/refs/heads/main/Part_1/data/forest_area_asean_long.csv" },
-              "transform": [
-                { "filter": "datum.Year == 2000" },
-                {
-                  "filter": "indexof(['BRN','KHM','IDN','LAO','MMR','MYS','PHL','SGP','THA','VNM'], datum['Country Code']) >= 0"
-                },
-                { "calculate": "datum['ForestArea'] / datum['Land Area(Sqkm)'] * 100", "as": "ForestArea_percent" },
-                {
-                  "lookup": "Country Code",
-                  "from": {
-                    "data": {
-                      "url": "https://raw.githubusercontent.com/Xin-999/visualisation-vegalite/refs/heads/main/Part_2/js/ne_10m_asean.topojson",
-                      "format": { "type": "topojson", "feature": "ne_10m_admin_0_countries" }
-                    },
-                    "key": "properties.ISO_A3",
-                    "fields": ["geometry", "properties"]
-                  }
-                }
-              ],
-              "mark": { "type": "geoshape" },
-              "encoding": {
-                "shape": { "field": "geometry", "type": "geojson" },
-                "color": {
-                  "field": "ForestArea_percent",
-                  "type": "quantitative",
-                  "scale": {
-                    "type": "threshold",
-                    "domain": [30, 50, 60],
-                    "range": ["#edf8e9", "#bae4b3", "#74c476", "#238b45"]
-                  },
-                  "legend": null
-                }
-              }
+              "key": "properties.ISO_A3",
+              "fields": ["geometry", "properties"]
             }
+          }
+        ],
+        "mark": {"type": "geoshape"},
+        "encoding": {
+          "shape": {"field": "geometry", "type": "geojson"},
+          "color": {
+            "field": {"repeat": "repeat"},
+            "type": "quantitative",
+            "title": "Forest area (% of land)",
+            "scale": {
+              "type": "threshold",
+              "domain": [30, 50, 60],
+              "range": ["#f7fcf5", "#c7e9c0", "#74c476", "#238b45", "#00441b"]
+            },
+            "legend": {
+              "orient": "bottom",
+              "offset": 6,
+              "direction": "horizontal",
+              "columns": 4,
+              "titleAnchor": "middle"
+            }
+          },
+          "tooltip": [
+            {"field": "Country Name", "title": "Country"},
+            {"field": {"repeat": "repeat"}, "type": "quantitative", "format": ".2f", "title": "% of land"}
           ]
         }
-      ]
-    },
-
-    {
-      "hconcat": [
-        {
-          "title": "2010",
-          "projection": { "type": "equalEarth" },
-          "width": 360,
-          "height": 265,
-          "layer": [
-            {
-              "data": {
-                "url": "https://raw.githubusercontent.com/Xin-999/visualisation-vegalite/refs/heads/main/Part_2/js/ne_10m_asean.topojson",
-                "format": { "type": "topojson", "feature": "ne_10m_admin_0_countries" }
-              },
-              "mark": { "type": "geoshape", "fill": "#efefef", "stroke": "white", "strokeWidth": 0.5 }
-            },
-            {
-              "data": { "url": "https://raw.githubusercontent.com/Xin-999/visualisation-vegalite/refs/heads/main/Part_1/data/forest_area_asean_long.csv" },
-              "transform": [
-                { "filter": "datum.Year == 2010" },
-                {
-                  "filter": "indexof(['BRN','KHM','IDN','LAO','MMR','MYS','PHL','SGP','THA','VNM'], datum['Country Code']) >= 0"
-                },
-                { "calculate": "datum['ForestArea'] / datum['Land Area(Sqkm)'] * 100", "as": "ForestArea_percent" },
-                {
-                  "lookup": "Country Code",
-                  "from": {
-                    "data": {
-                      "url": "https://raw.githubusercontent.com/Xin-999/visualisation-vegalite/refs/heads/main/Part_2/js/ne_10m_asean.topojson",
-                      "format": { "type": "topojson", "feature": "ne_10m_admin_0_countries" }
-                    },
-                    "key": "properties.ISO_A3",
-                    "fields": ["geometry", "properties"]
-                  }
-                }
-              ],
-              "mark": { "type": "geoshape" },
-              "encoding": {
-                "shape": { "field": "geometry", "type": "geojson" },
-                "color": {
-                  "field": "ForestArea_percent",
-                  "type": "quantitative",
-                  "scale": {
-                    "type": "threshold",
-                    "domain": [30, 50, 60],
-                    "range": ["#edf8e9", "#bae4b3", "#74c476", "#238b45"]
-                  },
-                  "legend": null
-                }
-              }
-            }
-          ]
+      },
+      {
+        "data": {
+          "url": "https://raw.githubusercontent.com/Xin-999/visualisation-vegalite/refs/heads/main/Part_2/js/ne_10m_asean.topojson",
+          "format": {"type": "topojson", "feature": "ne_10m_admin_0_countries"}
         },
-
-        {
-          "title": "2018",
-          "projection": { "type": "equalEarth" },
-          "width": 360,
-          "height": 265,
-          "layer": [
-            {
-              "data": {
-                "url": "https://raw.githubusercontent.com/Xin-999/visualisation-vegalite/refs/heads/main/Part_2/js/ne_10m_asean.topojson",
-                "format": { "type": "topojson", "feature": "ne_10m_admin_0_countries" }
-              },
-              "mark": { "type": "geoshape", "fill": "#efefef", "stroke": "white", "strokeWidth": 0.5 }
-            },
-            {
-              "data": { "url": "https://raw.githubusercontent.com/Xin-999/visualisation-vegalite/refs/heads/main/Part_1/data/forest_area_asean_long.csv" },
-              "transform": [
-                { "filter": "datum.Year == 2018" },
-                {
-                  "filter": "indexof(['BRN','KHM','IDN','LAO','MMR','MYS','PHL','SGP','THA','VNM'], datum['Country Code']) >= 0"
-                },
-                { "calculate": "datum['ForestArea'] / datum['Land Area(Sqkm)'] * 100", "as": "ForestArea_percent" },
-                {
-                  "lookup": "Country Code",
-                  "from": {
-                    "data": {
-                      "url": "https://raw.githubusercontent.com/Xin-999/visualisation-vegalite/refs/heads/main/Part_2/js/ne_10m_asean.topojson",
-                      "format": { "type": "topojson", "feature": "ne_10m_admin_0_countries" }
-                    },
-                    "key": "properties.ISO_A3",
-                    "fields": ["geometry", "properties"]
-                  }
-                }
-              ],
-              "mark": { "type": "geoshape" },
-              "encoding": {
-                "shape": { "field": "geometry", "type": "geojson" },
-                "color": {
-                  "field": "ForestArea_percent",
-                  "type": "quantitative",
-                  "scale": {
-                    "type": "threshold",
-                    "domain": [30, 50, 60],
-                    "range": ["#edf8e9", "#bae4b3", "#74c476", "#238b45"]
-                  },
-                  "legend": null
-                }
-              }
-            }
-          ]
+        "transform": [
+          {
+            "filter": "indexof(['BRN','KHM','IDN','LAO','MMR','MYS','PHL','SGP','THA','VNM'], datum.properties.ISO_A3) >= 0"
+          }
+        ],
+        "mark": {"type": "text", "font": "serif", "fontSize": 9, "align": "center", "baseline": "middle"},
+        "encoding": {
+          "longitude": {"field": "properties.LABEL_X", "type": "quantitative"},
+          "latitude": {"field": "properties.LABEL_Y", "type": "quantitative"},
+          "text": {"field": "properties.NAME"},
+          "color": {"value": "#6b7280"}
         }
-      ]
-    }
-  ],
-
-  "resolve": { "scale": { "color": "shared" } },
-  "config": { "view": { "stroke": null } }
+      },
+      {
+        "data": {
+          "values": [{
+            "1992": "Year: 1992",
+            "2000": "Year: 2000",
+            "2010": "Year: 2010",
+            "2018": "Year: 2018"
+          }]
+        },
+        "mark": {
+          "type": "text",
+          "align": "right",
+          "baseline": "bottom",
+          "x": "width",
+          "y": 0,
+          "dy": 4,
+          "dx": -4,
+          "fontSize": 12,
+          "fontWeight": "bold",
+          "color": "#374151"
+        },
+        "encoding": { "text": {"field": {"repeat": "repeat"}} }
+      }
+    ]
+  },
+  "config": {
+    "view": {"stroke": null},
+    "background": "white"
+  }
 }

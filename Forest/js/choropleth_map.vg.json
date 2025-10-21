@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Forest Cover as a Percentage of Land Area in ASEAN Countries (1990–2022)",
+  "title": "Forest Area Percentage of Land Area in ASEAN Countries (1990–2022)",
   "width": "container",
   "height": 470,
   "autosize": { "type": "fit", "contains": "padding", "resize": true },
@@ -75,7 +75,7 @@
           { "field": "Year", "type": "ordinal" },
           { "field": "ForestArea", "type": "quantitative", "format": ",.0f", "title": "Forest area (km²)" },
           { "field": "ForestArea_percent", "type": "quantitative", "format": ".2f", "title": "Forest area (% of land)" },
-          { "field": "ForestArea_per_1000sqkm", "type": "quantitative", "format": ".1f", "title": "per 1,000 km²" }
+          { "field": "ForestArea_per_1000sqkm", "type": "quantitative", "format": ".1f", "title": "Forest area per 1,000 km²" }
         ]
       }
       
