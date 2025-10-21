@@ -1,6 +1,12 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Forest Area Percentage of Land Area in ASEAN Countries (1990–2022)",
+  "title": {
+    "text": "Forest Area Percentage of Land Area in ASEAN Countries (1990–2022)",
+    "fontWeight": "bold",
+    "anchor": "start",
+    "color": "#333",
+    "font": "Geograph"
+  },
   "width": "container",
   "height": 470,
   "autosize": { "type": "fit", "contains": "padding", "resize": true },

@@ -1,6 +1,11 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Malaysia — Factors of Tree cover loss (2001–2024)",
+  "title": {
+    "text": "Malaysia — Factors of Tree cover loss (2001–2024)",
+    "anchor": "start",
+    "color": "#333",
+    "font": "Geograph"
+  },
   "data": {
     "url": "https://raw.githubusercontent.com/Xin-999/3179/refs/heads/main/Forest/data/tree_cover_loss_drivers_malaysia.csv"
   },
@@ -9,36 +14,83 @@
       "width": 450,
       "height": 420,
       "transform": [
-        {"calculate": "toNumber(datum.Year)", "as": "year_num"},
-        {"filter": "isValid(datum.loss_ha) && isValid(datum.year_num) && datum.year_num >= 2001"},
-        {"joinaggregate": [{"op": "sum", "field": "loss_ha", "as": "year_total"}], "groupby": ["year_num"]},
-        {"calculate": "datum.loss_ha / datum.year_total", "as": "share_raw"}
+        { "calculate": "toNumber(datum.Year)", "as": "year_num" },
+        {
+          "filter": "isValid(datum.loss_ha) && isValid(datum.year_num) && datum.year_num >= 2001"
+        },
+        {
+          "joinaggregate": [
+            { "op": "sum", "field": "loss_ha", "as": "year_total" }
+          ],
+          "groupby": ["year_num"]
+        },
+        { "calculate": "datum.loss_ha / datum.year_total", "as": "share_raw" }
       ],
-      "mark": {"type": "area", "interpolate": "monotone", "clip": true},
+      "mark": { "type": "area", "interpolate": "monotone", "clip": true },
       "encoding": {
         "x": {
           "field": "year_num",
           "type": "quantitative",
-          "scale": {"domain": {"param": "brush"}, "domainMin": 2001, "domainMax": 2024, "nice": false, "zero": false},
-          "axis": {"format": "d", "labelAngle": 0, "tickMinStep": 1, "title": null}
+          "scale": {
+            "domain": { "param": "brush" },
+            "domainMin": 2001,
+            "domainMax": 2024,
+            "nice": false,
+            "zero": false
+          },
+          "axis": {
+            "format": "d",
+            "labelAngle": 0,
+            "tickMinStep": 1,
+            "title": null
+          }
         },
         "y": {
           "aggregate": "sum",
           "field": "loss_ha",
           "type": "quantitative",
           "stack": "center",
-          "axis": {"title": "Tree cover loss (ha)"}
+          "axis": { "title": "Tree cover loss (ha)","format": ",.0f",
+            "titleFont": "Geograph" }
         },
         "color": {
           "field": "driver",
           "type": "nominal",
-          "legend": {"orient": "bottom", "columns": 4, "title": null}
+          "scale": {
+            "range": [
+              "#4E79A7",
+              "#F28E2B",
+              "#E15759",
+              "#9C9C9C",
+              "#EAF27C",
+              "#B07AA1",
+              "#FF9DA7"
+            ]
+          },
+          "legend": { "orient": "bottom", "columns": 4, "title": null }
         },
         "tooltip": [
-          {"field": "driver", "title": "Factor"},
-          {"field": "year_num", "type": "quantitative", "format": "d", "title": "Year"},
-          {"aggregate": "sum", "field": "loss_ha", "type": "quantitative", "format": ",.0f", "title": "Loss (ha)"},
-          {"aggregate": "sum", "field": "share_raw", "type": "quantitative", "format": ".0%", "title": "Share of year"}
+          { "field": "driver", "title": "Factor" },
+          {
+            "field": "year_num",
+            "type": "quantitative",
+            "format": "d",
+            "title": "Year"
+          },
+          {
+            "aggregate": "sum",
+            "field": "loss_ha",
+            "type": "quantitative",
+            "format": ",.0f",
+            "title": "Loss (ha)"
+          },
+          {
+            "aggregate": "sum",
+            "field": "share_raw",
+            "type": "quantitative",
+            "format": ".0%",
+            "title": "Share of year"
+          }
         ]
       }
     },
@@ -46,19 +98,34 @@
       "width": 450,
       "height": 70,
       "transform": [
-        {"calculate": "toNumber(datum.Year)", "as": "year_num"},
-        {"filter": "isValid(datum.loss_ha) && isValid(datum.year_num) && datum.year_num >= 2001"}
+        { "calculate": "toNumber(datum.Year)", "as": "year_num" },
+        {
+          "filter": "isValid(datum.loss_ha) && isValid(datum.year_num) && datum.year_num >= 2001"
+        }
       ],
       "params": [
-        {"name": "brush", "select": {"type": "interval", "encodings": ["x"]}}
+        {
+          "name": "brush",
+          "select": { "type": "interval", "encodings": ["x"] }
+        }
       ],
-      "mark": {"type": "area", "interpolate": "monotone", "opacity": 0.5, "clip": true},
+      "mark": {
+        "type": "area",
+        "interpolate": "monotone",
+        "opacity": 0.5,
+        "clip": true
+      },
       "encoding": {
         "x": {
           "field": "year_num",
           "type": "quantitative",
-          "scale": {"domain": [2001, 2024], "nice": false, "zero": false},
-          "axis": {"format": "d", "labelAngle": 0, "tickMinStep": 1, "title": null}
+          "scale": { "domain": [2001, 2024], "nice": false, "zero": false },
+          "axis": {
+            "format": "d",
+            "labelAngle": 0,
+            "tickMinStep": 1,
+            "title": null
+          }
         },
         "y": {
           "aggregate": "sum",
@@ -67,9 +134,36 @@
           "stack": "center",
           "axis": null
         },
-        "color": {"field": "driver", "type": "nominal", "legend": null}
+        "color": {
+          "field": "driver",
+          "type": "nominal",
+          "legend": null,
+          "scale": {
+            "range": [
+              "#4E79A7",
+              "#F28E2B",
+              "#E15759",
+              "#9C9C9C",
+              "#EAF27C",
+              "#B07AA1",
+              "#FF9DA7"
+            ]
+          }
+        }
       }
     }
   ],
-  "resolve": {"scale": {"x": "independent"}}
+  "resolve": { "scale": { "x": "independent" } },
+  "config": {
+    "view": { "stroke": null },
+    "legend": { "title": null },
+    "axis": {
+      "grid": true,
+      "gridColor": "#d7d8db47",
+      "gridOpacity": 1,
+      "gridWidth": 1,
+      "domain": true,
+      "ticks": true
+    }
+  }
 }

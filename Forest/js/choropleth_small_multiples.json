@@ -1,6 +1,12 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Forest Area (% of Land) in ASEAN (1992, 2000, 2010, 2018)",
+  "title": {
+    "text": "Forest Area (% of Land) in ASEAN (1992, 2000, 2010, 2018)",
+    "fontWeight": "bold",
+    "anchor": "start",
+    "color": "#333",
+    "font": "Geograph"
+  },
   "repeat": ["1992", "2000", "2010", "2018"],
   "columns": 2,
   "spec": {
