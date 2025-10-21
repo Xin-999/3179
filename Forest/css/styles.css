@@ -26,7 +26,6 @@ body {
 
 .description h2,
 h1 {
-  /* font-family: "Times New Roman", Times, serif;  */
   font-family: "Geograph", system-ui, sans-serif;
   margin-top: 0px;
   color: #222222;
@@ -88,15 +87,13 @@ h1 {
     font-family: 'Roboto', sans-serif;
 }
 
-/* Tighten ONLY between donut charts and captions */
 .donut-row { 
-  margin-bottom: px !important;   /* was coming from .pure-g default */
+  margin-bottom: px !important;   
 }
 .donut-row .vis-container {
-  padding-bottom: 4px;             /* was 8px in your inline styles */
+  padding-bottom: 4px;            
 }
 
-/* Remove big top gap on the first caption heading */
 .description h3 {
   margin-top:6px;
   font-family:"Geograph";
@@ -115,7 +112,6 @@ h1 {
 #vis-donut-cover, #vis-donut { margin-bottom: 0px; }
 #vis-choro-multiple { position: relative; z-index: 1; }
 
-/* Layout for “maps on the left (2 rows), notes bottom-right” */
 .maps-text-grid{
   display:grid;
   grid-template-columns: 2fr 1fr;   /* 2/3 – 1/3 */
