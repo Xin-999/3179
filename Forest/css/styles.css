@@ -8,10 +8,17 @@ body {
 
 .page {
   width: 850px;
-  background-color: white;
+  background-color: #fefefeff;
   margin: auto;
   padding: 50px;
   padding-top: 35px;
+  margin-left: auto;
+  margin-right: auto;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border-radius: 30px;
 }
 
 .vis-container {
